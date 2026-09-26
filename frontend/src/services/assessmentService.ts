@@ -86,7 +86,7 @@ export const assessmentService = {
     assessmentId: number | string,
     imageId: number | string
   ): string => {
-    return `/api/assessments/${assessmentId}/images/${imageId}/view`;
+    return `${api.defaults.baseURL}/assessments/${assessmentId}/images/${imageId}/view`;
   },
 
   // =========================================================================

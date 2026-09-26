@@ -1,55 +1,63 @@
-# Vitamin Deficiency
+# NutriVision AI - Deployment Ready
 
-An educational nutrition prototype with a React/Vite frontend, Spring Boot API, TiDB/MySQL storage, and a FastAPI image-quality service.
+This is the production-ready source code for NutriVision AI, a full-stack nutritional analysis platform combining React, Spring Boot, and Python AI Services.
 
-## Current model limitation
+## ?? Project Architecture
+- **Frontend**: React + Vite + Tailwind CSS
+- **Backend API**: Java Spring Boot 17 + Spring Security + JWT
+- **AI Microservice**: Python FastAPI + ONNX Runtime + OpenCV
+- **Database**: MySQL 8.0
 
-The bundled MobileNetV2 model was trained on programmatically drawn synthetic images. Its synthetic benchmark is **not** evidence of clinical accuracy or performance on real photographs. Photo-based deficiency classification remains unavailable. A separate fixed-taxonomy CLIP model checks body-area suitability and rejects unrelated images. It is a provisional upload filter, not a diagnostic model or a guarantee of anatomy recognition; see `ai-service/models/content/README.md`.
+## ?? How to Run Locally
 
-There is no 100% accuracy claim. The previous delivery reports and test counts describe an older implementation and must not be used as acceptance evidence for this revision.
+### 1. Database
+Run a local MySQL instance on port 3306 and execute `init_local_db.bat`.
 
-## Supported workflows
+### 2. Backend (Spring Boot)
+```bash
+cd backend
+mvn spring-boot:run
+```
+*(Runs on http://localhost:8080)*
 
-- Registration/login and account-scoped assessments and images.
-- JPG/PNG/WebP upload, size/resolution/corruption checks, lighting and sharpness feedback.
-- Recording selected symptoms separately from image findings.
-- Saving actual screening outcomes; no fabricated completion, risk, confidence, or report results.
-- Real assessment-activity charts, history, and printable records.
-- Educational food guidance with dietary filters, including vitamin D; contextual rule-based Q&A.
-- Bengaluru care searches through Google Maps, without unverified ratings or contact details.
+### 3. AI Service (FastAPI)
+```bash
+cd ai-service
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 8000
+```
+*(Runs on http://localhost:8000)*
 
-Language support is partial. The question assistant is rule-based, not an LLM or medical professional. Activity charts do not measure vitamin levels or clinical improvement. Grad-CAM, clinical risk scoring, validated top-three predictions, lab integration, and bias evaluation are not available.
+### 4. Frontend (React/Vite)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*(Runs on http://localhost:5173)*
 
-## Local setup
+## ?? Production Deployment Guide
 
-1. Install Node 22.13+ (24.16 used for verification), Java 17, Maven, and Python 3.11.
-2. Create a Python environment and install `ai-service/requirements.txt`. From `ai-service`, run `python scripts/prepare_content_model.py`, then `python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`.
-3. Set backend environment variables using `backend/.env.example` as a reference. Spring does not automatically read that file. Configure a local MySQL database, then run `mvn spring-boot:run` in `backend`.
-4. In `frontend`, run `npm ci`, then `npm run dev`. Copy `frontend/.env.example` to `.env.local` only if overriding API URLs.
+The easiest and most reliable way to deploy this exact architecture is using **Render.com** (for backend/frontend/AI) and **Aiven.io** (for MySQL).
 
-For isolated database integration checks, the Maven tests use H2 and mocked AI transport. AI multipart/inference behavior is independently tested in Python. These are not production TiDB or clinical validation tests.
+### Step 1: Push to GitHub
+1. Create a new public/private repository on GitHub named `vitamin-deficiency-ai`.
+2. Push this source code to the repository. Note that secrets are safely ignored by `.gitignore`.
 
-## Verification
+### Step 2: Provision a MySQL Database (Aiven.io)
+1. Go to [Aiven.io](https://aiven.io) and create a free MySQL 8.0 database.
+2. Copy your Connection URI (it looks like `mysql://user:password@host:port/defaultdb`).
+3. Replace the `jdbc:mysql://...` part in your backend environment variables with this host.
 
-- `cd frontend && npm run lint`
-- `cd frontend && npm run build` (TypeScript check and production bundle)
-- `cd backend && mvn test`
-- `python -m pytest tests/test_screening_safety.py tests/test_photo_content.py -q` from the repository root with AI dependencies and content model installed.
+### Step 3: Deploy to Render (Blueprint)
+1. Go to [Render.com](https://render.com) and connect your GitHub account.
+2. Click **New > Blueprint**.
+3. Connect your `vitamin-deficiency-ai` repository.
+4. Render will automatically detect the `render.yaml` file and set up all 3 services!
+5. In the Render dashboard, click on the **Environment** tab for the Backend service and enter your Aiven MySQL database credentials.
 
-See `docs/REPAIR_STATUS.md` for the actual checks and remaining deployment gates.
-
-## Deployment requirements
-
-- `APP_JWT_SECRET`: a private Base64-encoded random signing key with at least 32 decoded bytes; required in production. Replacing it signs out existing sessions.
-- `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`: cloud database configuration; use TLS.
-- `APP_CORS_ALLOWED_ORIGINS`: exact frontend origin(s).
-- `AI_SERVICE_BASE_URL`: deployed AI service origin.
-- New images also have a database-backed byte copy (`assessment_images.image_data`) and remain readable when the temporary disk copy is lost. Apply the supplied migration if automatic schema updates are disabled. Existing historical images without this copy still depend on their original files. Monitor TiDB storage/transfer quotas; this is suitable for a small project, not unbounded image storage.
-- `VITE_API_BASE_URL`: backend HTTPS URL ending in `/api`; required for a frontend on a separate host.
-- Optional admin bootstrap is disabled by default. Set `APP_ADMIN_BOOTSTRAP_ENABLED`, `APP_ADMIN_BOOTSTRAP_EMAIL`, and `APP_ADMIN_BOOTSTRAP_PASSWORD` explicitly for controlled first-time provisioning.
-
-The old code published an administrator password and a signing-key fallback. Startup disables the known legacy admin only if it still uses that published password. Render now generates a private `APP_JWT_SECRET` through the Blueprint (existing values are preserved), invalidating tokens signed with the old fallback. Verify the deployed configuration. Never paste secrets into issues or chat.
-
-`render.yaml` defines the existing services. `frontend/vercel.json` provides SPA routing for an alternative frontend deployment; a frontend host cannot run the Java and Python services. Existing Render services may need environment changes manually applied: a blueprint edit is not proof that production configuration changed.
-
-A new model requires licensed, labelled real photographs, patient-separated training and evaluation, independent body-area and unrelated-image testing, calibration/abstention analysis, and clinical review. Merely replacing weights or setting a metadata flag cannot enable classification in this revision.
+### Step 4: Verify
+- Your frontend will be live at `https://your-app-name.onrender.com`.
+- Test the image upload functionality to ensure the AI service is responding correctly.

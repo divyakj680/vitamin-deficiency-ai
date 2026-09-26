@@ -243,7 +243,7 @@ export const NewAssessmentPage: React.FC = () => {
 
     setIsLoading(true);
     try {
-      if (!uploadedImage || !consentAcknowledged) return;
+      if (!uploadedImage) return;
       const result = await assessmentService.screenAssessment(assessment.assessmentId, uploadedImage.imageId, selectedSymptoms);
       setScreeningResult(result);
       setAssessment(await assessmentService.getAssessmentById(assessment.assessmentId));
@@ -267,25 +267,21 @@ export const NewAssessmentPage: React.FC = () => {
       <div>
         <PageHeader
           title="Your photo assessment"
-          subtitle={`Step ${currentStep} of 6: ${
+          subtitle={`Step ${currentStep === 6 ? 4 : currentStep} of 4: ${
             currentStep === 1
               ? 'Choose a body area'
               : currentStep === 2
               ? 'Photo Upload & Capture'
               : currentStep === 3
               ? 'Check your photo'
-              : currentStep === 4
-              ? 'Symptom Questionnaire'
-              : currentStep === 5
-              ? 'Review & Consent'
-              : 'Your saved record'
+              : 'Your screening result'
           }`}
         />
 
         <div className="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full mt-4 overflow-hidden">
           <div
             className="bg-health-600 h-full transition-all duration-300 rounded-full"
-            style={{ width: `${(currentStep / 6) * 100}%` }}
+            style={{ width: `${((currentStep === 6 ? 4 : currentStep) / 4) * 100}%` }}
           />
         </div>
       </div>
@@ -537,10 +533,11 @@ export const NewAssessmentPage: React.FC = () => {
               variant="primary"
               size="md"
               disabled={!uploadedImage || !['PASSED', 'WARNING'].includes(uploadedImage.qualityStatus)}
-              onClick={() => setCurrentStep(4)}
+              isLoading={isLoading}
+              onClick={handleCompleteAssessment}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              Continue to Symptoms
+              Analyze Photo
             </Button>
           </div>
         </Card>

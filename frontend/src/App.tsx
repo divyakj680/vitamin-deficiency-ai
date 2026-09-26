@@ -50,8 +50,7 @@ export const App: React.FC = () => {
           <Route path="/how-it-works" element={<HowItWorksPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/disclaimer" element={<DisclaimerPage />} />
-          <Route path="/demo" element={<DemoModePage />} />
-          <Route path="/doctors" element={<FindDoctorPage />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />

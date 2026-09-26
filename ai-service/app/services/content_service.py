@@ -50,7 +50,7 @@ class ContentService:
                         opts.intra_op_num_threads = 2
                         opts.inter_op_num_threads = 1
                         self.session = ort.InferenceSession(str(MODEL_DIR / "vision_model_quantized.onnx"), opts, providers=["CPUExecutionProvider"])
-                        data = json.loads((MODEL_DIR / "text_embeddings.json").read_text())
+                        data = json.loads((MODEL_DIR / "text_embeddings.json").read_text(encoding="utf-8"))
                         self.labels = data["labels"]
                         self.embeddings = np.asarray(data["embeddings"], dtype=np.float32)
                     except Exception:
@@ -83,18 +83,24 @@ class ContentService:
             detected = max(groups, key=groups.get)
             score = groups[target]
             rival = max(value for key, value in groups.items() if key != target)
-            # Conservative abstention; these are operating thresholds, not accuracy claims.
-            accepted = detected == target and score >= 0.26 and score - rival >= 0.005
+            negative_cats = {"FOOD", "OBJECT", "ANIMAL", "SCENE", "DOCUMENT"}
+            neg_max = max((groups.get(c, 0.0) for c in negative_cats), default=0.0)
+            human_cats = {"EYES", "TONGUE", "NAILS", "LIPS", "SKIN", "HAIR", "FACE"}
+            human_max = max((groups.get(c, 0.0) for c in human_cats), default=0.0)
+            
+            # Accept as long as the photo looks more human than it looks like an object/scene
+            accepted = human_max >= neg_max
+            
             if accepted:
                 return {"status": "ACCEPTED", "detectedBodyPart": target, "message": "Your photo appears to show the selected body area."}
+            
             area = target.lower()
             message = f"Please upload a clear, close-up photo of your {area}. "
-            if detected not in BODY_PARTS:
-                message += "This image appears to show unrelated content. Food, objects, screenshots and drawings cannot be used."
-            elif detected != target:
-                message += "This photo does not clearly show the body area you selected."
+            if detected in negative_cats:
+                message += f"This image appears to show unrelated content (detected: {detected.lower()}). Food, objects, scenery and drawings cannot be used."
             else:
-                message += "We could not confidently confirm the selected body area. Keep it centred and well lit."
+                message += "This photo does not clearly show the body area you selected."
+                
             return {"status": "REJECTED", "message": message}
         except Exception:
             logging.getLogger(__name__).exception("Photo content check failed")

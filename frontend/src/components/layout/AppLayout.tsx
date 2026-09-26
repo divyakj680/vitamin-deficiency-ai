@@ -120,10 +120,10 @@ export const AppLayout: React.FC = () => {
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                     isActive
                       ? 'bg-health-50 dark:bg-health-950/70 text-health-700 dark:text-health-300 shadow-sm'
-                      : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-200'
+                      : 'text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
-                  <span className={isActive ? 'text-health-600 dark:text-health-400' : 'text-slate-400'}>
+                  <span className={isActive ? 'text-health-600 dark:text-health-400' : 'text-slate-600 dark:text-slate-300'}>
                     {item.icon}
                   </span>
                   <span>{item.label}</span>

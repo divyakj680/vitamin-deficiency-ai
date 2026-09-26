@@ -6,6 +6,7 @@ FastAPI service providing image quality analysis, deep learning inference, and G
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routers import health, quality, inference
+from app.services.model_service import model_service
 
 app = FastAPI(
     title="Vitamin Deficiency - Image Quality & AI Engine",
@@ -21,6 +22,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+async def load_models_on_startup():
+    model_service._initialize_model_registry()
+
 # Register Routers
 app.include_router(health.router)
 app.include_router(quality.router)
@@ -34,4 +39,4 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
     host = os.getenv("HOST", "0.0.0.0")
     uvicorn.run("app.main:app", host=host, port=port, reload=False)
-
+    

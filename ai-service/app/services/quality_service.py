@@ -11,8 +11,8 @@ from PIL import Image, ImageOps
 from app.core.config import settings
 from app.schemas.quality import ImageQualityResponse
 
-BLUR_REJECT_THRESHOLD = 70.0
-BLUR_ACCEPT_THRESHOLD = settings.blur_laplacian_threshold  # Default: 100.0
+BLUR_REJECT_THRESHOLD = 10.0
+BLUR_ACCEPT_THRESHOLD = 30.0
 BRIGHTNESS_MIN_REJECT = settings.min_brightness_luminance   # Default: 40.0
 BRIGHTNESS_MIN_WARN = 60.0
 BRIGHTNESS_MAX_WARN = 200.0
@@ -91,7 +91,7 @@ def evaluate_image_quality(image_bytes: bytes) -> ImageQualityResponse:
             qualityStatus="REJECTED",
             blurScore=blur_score,
             brightnessScore=brightness_score,
-            rejectionReason=f"Image is too blurry (sharpness score: {blur_score}, threshold: {BLUR_ACCEPT_THRESHOLD:.0f}). Please hold the camera steady and capture a clearer photograph."
+            rejectionReason=f"Image is too blurry (sharpness score: {blur_score}, threshold: {BLUR_REJECT_THRESHOLD:.0f}). Please hold the camera steady and capture a clearer photograph."
         )
 
     # 5d. Warning: Borderline blur

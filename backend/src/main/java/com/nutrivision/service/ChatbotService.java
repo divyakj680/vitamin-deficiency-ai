@@ -373,15 +373,43 @@ public class ChatbotService {
             );
         }
 
-        // Default intelligent contextual response
+        // Strict topic guard — only answer if the message contains a nutrition/deficiency-related word
+        boolean isRelevant = msg.contains("vitamin") || msg.contains("deficiency") || msg.contains("iron")
+                || msg.contains("zinc") || msg.contains("nutrient") || msg.contains("nutrition") || msg.contains("food")
+                || msg.contains("eat") || msg.contains("diet") || msg.contains("skin") || msg.contains("nail")
+                || msg.contains("tongue") || msg.contains("hair") || msg.contains("eye") || msg.contains("lips")
+                || msg.contains("symptom") || msg.contains("sign") || msg.contains("healthy") || msg.contains("health")
+                || msg.contains("doctor") || msg.contains("clinic") || msg.contains("supplement") || msg.contains("protein")
+                || msg.contains("mineral") || msg.contains("calcium") || msg.contains("pale") || msg.contains("fatigue")
+                || msg.contains("tired") || msg.contains("weak") || msg.contains("bruise") || msg.contains("wound")
+                || msg.contains("assessment") || msg.contains("result") || msg.contains("check") || msg.contains("meal")
+                || msg.contains("hindi") || msg.contains("veg") || msg.contains("bengaluru") || msg.contains("bangalore");
+
+        if (!isRelevant) {
+            return new ChatMessageResponse(
+                    "I'm sorry, that appears to be unrelated to vitamin deficiency or nutrition. 🚫\n\n" +
+                            "I am the NutriVision AI Assistant and I can only help with:\n" +
+                            "• Vitamin deficiency information (B12, Iron, Vitamin A, C, Zinc)\n" +
+                            "• Visible symptoms such as pale nails, sore tongue, or dry skin\n" +
+                            "• Indian food sources for each vitamin\n" +
+                            "• Finding a doctor or clinic\n" +
+                            "• Your previous assessments\n\n" +
+                            "Please ask a question related to vitamins, nutrition, or your health assessment.",
+                    "UNRELATED_QUERY",
+                    Arrays.asList("What is Vitamin B12?", "Foods that contain iron", "What does my result mean?", "Find a doctor in Bengaluru"),
+                    DEFAULT_DISCLAIMER,
+                    false
+            );
+        }
+
+        // Default intelligent contextual response (only reached for relevant but unmatched topics)
         return new ChatMessageResponse(
-                "I understand you are asking about \"" + request.getMessage() + "\".\n\n" +
-                        "Vitamin Deficiency specializes in educational guidance on preliminary visual signs of nutritional deficiencies (such as Iron, Vitamin B12, Vitamin C, Vitamin A, and Zinc), culinary food recommendations, and healthcare referrals.\n\n" +
-                        "Would you like to know about:\n" +
-                        "1. How specific vitamins function and their food sources\n" +
-                        "2. Explaining a visible sign (e.g., sore tongue, spoon nails, cracked lip corners)\n" +
-                        "3. Reviewing your saved assessments\n" +
-                        "4. Finding a doctor or clinic in Bengaluru?",
+                "I can help with that! Vitamin Deficiency specializes in educational guidance on:\n\n" +
+                        "• Vitamin & mineral deficiency information (Iron, B12, Vitamin C, A, Zinc)\n" +
+                        "• Explaining visible body signs like sore tongue, spoon nails, or pale skin\n" +
+                        "• Indian food recommendations for each vitamin\n" +
+                        "• Finding a doctor or clinic in Bengaluru\n\n" +
+                        "Could you be more specific? For example, ask about a specific vitamin, a symptom you noticed, or a food source.",
                 "GENERAL_ASSISTANCE",
                 Arrays.asList("What is Vitamin B12?", "Foods that contain iron", "Find a doctor in Bengaluru", "When should I see a doctor?"),
                 DEFAULT_DISCLAIMER,

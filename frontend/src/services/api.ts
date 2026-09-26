@@ -54,6 +54,7 @@ api.interceptors.response.use(
       showToast.error('Server Error', 'The backend encountered an internal error.');
     }
 
-    return Promise.reject(new Error(errorMessage));
+    error.message = errorMessage;
+    return Promise.reject(error);
   }
 );
