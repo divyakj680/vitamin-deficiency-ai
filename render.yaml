@@ -1,12 +1,12 @@
 # ==============================================================================
 # NutriVision AI - Render Deployment Blueprint (render.yaml)
-# Custom URLs containing GitHub username: kiranbcrkbc
+# Custom URLs containing GitHub username: divyakj680
 # ==============================================================================
 
 services:
   # 1. AI Microservice (FastAPI + OpenCV + MobileNetV2 ONNX)
   - type: web
-    name: kiranbcrkbc-nutrivision-ai-service
+    name: divyakj680-nutrivision-ai-service
     env: docker
     dockerfilePath: ./ai-service/Dockerfile
     dockerContext: ./ai-service
@@ -20,7 +20,7 @@ services:
 
   # 2. Backend Gateway (Spring Boot 3 + Security + JWT)
   - type: web
-    name: kiranbcrkbc-nutrivision-backend
+    name: divyakj680-nutrivision-backend
     env: docker
     dockerfilePath: ./backend/Dockerfile
     dockerContext: ./backend
@@ -30,7 +30,7 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: prod
       - key: AI_SERVICE_BASE_URL
-        value: "https://kiranbcrkbc-nutrivision-ai-service.onrender.com"
+        value: "https://divyakj680-nutrivision-ai-service.onrender.com"
       - key: SPRING_DATASOURCE_URL
         sync: false
       - key: SPRING_DATASOURCE_USERNAME
@@ -40,11 +40,11 @@ services:
       - key: SPRING_DATASOURCE_PASSWORD
         sync: false
       - key: APP_CORS_ALLOWED_ORIGINS
-        value: "https://kiranbcrkbc-nutrivision-ai.onrender.com,https://kiranbcrkbc-nutrivision.onrender.com"
+        value: "https://divyakj680-nutrivision-ai.onrender.com,https://divyakj680-nutrivision.onrender.com"
 
   # 3. Frontend UI (React 18 + Vite Static Site)
   - type: web
-    name: kiranbcrkbc-nutrivision-ai
+    name: divyakj680-nutrivision-ai
     env: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
@@ -55,4 +55,4 @@ services:
         destination: /index.html
     envVars:
       - key: VITE_API_BASE_URL
-        value: "https://kiranbcrkbc-nutrivision-backend.onrender.com/api"
+        value: "https://divyakj680-nutrivision-backend.onrender.com/api"
