@@ -45,3 +45,4 @@ INSERT INTO doctor_referrals (deficiency_category, specialist_type, description)
 ('VITAMIN_C', 'Dermatologist (Skin Specialist)', 'Evaluates collagen synthesis, skin elasticity, micro-capillary fragility, and wound repair.'),
 ('VITAMIN_D', 'Orthopedic / Endocrinologist', 'Assesses bone mineral density, serum 25(OH)D levels, and calcium homeostasis.');
 
+

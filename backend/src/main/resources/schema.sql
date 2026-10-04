@@ -17,15 +17,15 @@ CREATE TABLE IF NOT EXISTS users (
     full_name VARCHAR(150) NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     INDEX idx_users_email (email)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS roles (
     role_id INT AUTO_INCREMENT PRIMARY KEY,
     role_name VARCHAR(50) NOT NULL UNIQUE,
     description VARCHAR(255) NULL
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS user_roles (
     user_id BIGINT NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS user_roles (
     PRIMARY KEY (user_id, role_id),
     CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_user_roles_role FOREIGN KEY (role_id) REFERENCES roles(role_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS user_profiles (
     profile_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS user_profiles (
     preferred_language VARCHAR(10) NOT NULL DEFAULT 'en',
     city VARCHAR(100) NULL,
     country VARCHAR(100) NULL DEFAULT 'India',
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     CONSTRAINT fk_user_profiles_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 -- ------------------------------------------------------------------------------
 -- 2. Datasets & Model Registry
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS dataset_sources (
     body_parts_covered VARCHAR(255) NOT NULL,
     source_url TEXT NULL,
     registered_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS model_versions (
     model_version_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS model_versions (
     test_loss FLOAT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_model_versions_dataset FOREIGN KEY (dataset_id) REFERENCES dataset_sources(dataset_id)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS model_evaluations (
     eval_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -88,7 +88,7 @@ CREATE TABLE IF NOT EXISTS model_evaluations (
     metrics_json JSON NULL,
     evaluated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_model_evals_model FOREIGN KEY (model_version_id) REFERENCES model_versions(model_version_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 -- ------------------------------------------------------------------------------
 -- 3. Assessments & Image Quality
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS assessments (
     completed_at DATETIME NULL,
     INDEX idx_assessments_user (user_id),
     CONSTRAINT fk_assessments_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS assessment_images (
     image_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS assessment_images (
     rejection_reason VARCHAR(255) NULL,
     uploaded_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_assessment_images_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS symptoms (
     symptom_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS symptoms (
     name VARCHAR(150) NOT NULL,
     related_body_part VARCHAR(50) NOT NULL,
     description TEXT NULL
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS assessment_symptoms (
     assessment_id BIGINT NOT NULL,
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS assessment_symptoms (
     PRIMARY KEY (assessment_id, symptom_id),
     CONSTRAINT fk_assess_symptoms_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE,
     CONSTRAINT fk_assess_symptoms_symptom FOREIGN KEY (symptom_id) REFERENCES symptoms(symptom_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS predictions (
     prediction_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS predictions (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_predictions_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE,
     CONSTRAINT fk_predictions_model FOREIGN KEY (model_version_id) REFERENCES model_versions(model_version_id)
-) ENGINE=InnoDB;
+);
 
 -- ------------------------------------------------------------------------------
 -- 4. Recommendations, Nutrition & Reports
@@ -163,7 +163,7 @@ CREATE TABLE IF NOT EXISTS food_recommendations (
     serving_suggestion TEXT NULL,
     regional_availability VARCHAR(100) NULL,
     INDEX idx_food_rec_deficiency (deficiency_category, diet_type)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS nutrition_plans (
     plan_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS nutrition_plans (
     weekly_meal_plan_json JSON NOT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_nutrition_plans_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS health_reports (
     report_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -183,14 +183,14 @@ CREATE TABLE IF NOT EXISTS health_reports (
     medical_disclaimer_text TEXT NOT NULL,
     generated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_health_reports_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS doctor_referrals (
     referral_id INT AUTO_INCREMENT PRIMARY KEY,
     deficiency_category VARCHAR(100) NOT NULL,
     specialist_type VARCHAR(100) NOT NULL,
     description TEXT NOT NULL
-) ENGINE=InnoDB;
+);
 
 -- ------------------------------------------------------------------------------
 -- 5. Chatbot, Feedback & Admin Auditing
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS chatbot_conversations (
     started_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_chatbot_conv_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_chatbot_conv_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE SET NULL
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS chatbot_messages (
     message_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS chatbot_messages (
     message_text TEXT NOT NULL,
     sent_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_chatbot_msg_conv FOREIGN KEY (conversation_id) REFERENCES chatbot_conversations(conversation_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS feedback (
     feedback_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS feedback (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_feedback_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_feedback_assessment FOREIGN KEY (assessment_id) REFERENCES assessments(assessment_id) ON DELETE CASCADE
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE IF NOT EXISTS admin_audit_logs (
     log_id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -237,5 +237,6 @@ CREATE TABLE IF NOT EXISTS admin_audit_logs (
     timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_audit_timestamp (timestamp),
     CONSTRAINT fk_audit_admin FOREIGN KEY (admin_user_id) REFERENCES users(user_id)
-) ENGINE=InnoDB;
+);
+
 

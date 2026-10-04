@@ -16,12 +16,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         format_sql: false
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema.sql
-      data-locations: classpath:seed_nutrition.sql,classpath:seed_symptoms.sql
-
 logging:
   level:
     root: INFO
@@ -35,4 +29,5 @@ app:
   ai-service:
     url: ${AI_SERVICE_BASE_URL:https://divyakj680-nutrivision-ai-service.onrender.com}
     timeout-ms: 120000
+
 

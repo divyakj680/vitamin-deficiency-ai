@@ -36,3 +36,4 @@ INSERT INTO symptoms (symptom_code, name, related_body_part, description) VALUES
 ('DRY_BRITTLE_HAIR', 'Dry, Brittle, or Splitting Hair', 'HAIR', 'Hair strands lacking elasticity and breaking easily.'),
 ('PREMATURE_GRAYING', 'Early Graying of Hair', 'HAIR', 'Loss of hair pigment at a young age.');
 
+
