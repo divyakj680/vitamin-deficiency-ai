@@ -9,7 +9,7 @@ export const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 60000,
+  timeout: 180000,
 });
 
 // Request Interceptor: Attach JWT Token
@@ -58,3 +58,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
