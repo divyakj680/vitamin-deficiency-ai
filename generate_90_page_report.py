@@ -154,6 +154,7 @@ def add_header_footer(section, header_text, is_roman=False):
     hr = hp.add_run(header_text)
     hr.font.name = "Times New Roman"
     hr.font.size = Pt(9.5)
+    hr.font.bold = True
     
     # Clean single border line under header text (top of content)
     pBdr = OxmlElement('w:pBdr')
@@ -285,7 +286,7 @@ def build_cover_page():
     format_para(p_rep, WD_ALIGN_PARAGRAPH.CENTER, space_after=2, line_spacing=1.0)
     add_run(p_rep, "Project Report\n", size=15, bold=True, color=RGBColor(0,0,150))
     add_run(p_rep, "ON\n", size=13, bold=True)
-    add_run(p_rep, "“Vitamin Deficiency Identification Using Image Processing”\n", size=16, bold=True, color=RGBColor(200,0,0))
+    add_run(p_rep, '"Vitamin Deficiency Identification Using Image Processing"' + chr(10), size=16, bold=True, color=RGBColor(200,0,0))
     
     p_sub = doc.add_paragraph()
     format_para(p_sub, WD_ALIGN_PARAGRAPH.CENTER, space_after=2, line_spacing=1.0)
@@ -347,7 +348,7 @@ def build_certificate():
     p = doc.add_paragraph()
     format_para(p, WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=14, line_spacing=1.4)
     add_run(p, "This is to certify that the Project Work entitled ")
-    add_run(p, "“Vitamin Deficiency Identification Using Image Processing”", color=RGBColor(200,0,0))
+    add_run(p, '"Vitamin Deficiency Identification Using Image Processing"', bold=True, color=RGBColor(200,0,0))
     add_run(p, " as a part of PROJECT WORK (BCS786) carried out by ")
     add_run(p, "Ashwini V (1RI23CS015), Bhumika K M (1RI23CS025), Chandana H K (1RI23CS029), HithaShree B S (1RI23CS061)", color=RGBColor(0,140,0))
     add_run(p, " in partial fulfillment for the award of degree in Bachelor of Engineering in Computer Science Engineering from Visvesvaraya Technological University, Belagavi during the academic year 2026-27. It is certified that all the corrections / suggestions indicated for internal assessment have been incorporated in the report submitted in the department Library. This Project Work report has been approved as it satisfies the academic requirements in respect of Project Work report prescribed for award of said degree.\n")
@@ -426,7 +427,7 @@ def build_declaration():
     add_run(p2, "We, ")
     add_run(p2, "Ashwini V (1RI23CS015), Bhumika K M (1RI23CS025), Chandana H K (1RI23CS029), HithaShree B S (1RI23CS061)", color=RGBColor(0,140,0))
     add_run(p2, ", students of 7th semester in, Computer Science and Engineering, R R Institute of Technology, Chikkabanavara, Bangalore -560090, hereby declare that the Project work entitled ")
-    add_run(p2, "“Vitamin Deficiency Identification Using Image Processing”", color=RGBColor(200,0,0))
+    add_run(p2, '"Vitamin Deficiency Identification Using Image Processing"', bold=True, color=RGBColor(200,0,0))
     add_run(p2, " has been carried out by us under the supervision of our guide ")
     add_run(p2, "Prof. HEMAVATHI", color=RGBColor(200,0,0))
     add_run(p2, ", Assistant Professor, Department of Computer Science and Engineering, R R Institute of Technology, Bengaluru and submitted in partial fulfillment for the award of degree in Bachelor of Engineering in Computer Science and Engineering of Visvesvaraya Technological University, Belagavi during the academic year 2026 - 2027. We further declare that the report has not been submitted to any other University for the award of any other degree.\n")
