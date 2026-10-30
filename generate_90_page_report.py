@@ -153,7 +153,7 @@ def add_header_footer(section, header_text, is_roman=False):
     hp.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
     hr = hp.add_run(header_text)
     hr.font.name = "Times New Roman"
-    hr.font.size = Pt(9.5)
+    hr.font.size = Pt(10)
     hr.font.bold = True
     
     # Clean single border line under header text (top of content)
@@ -286,11 +286,11 @@ def build_cover_page():
     format_para(p_rep, WD_ALIGN_PARAGRAPH.CENTER, space_after=2, line_spacing=1.0)
     add_run(p_rep, "Project Report\n", size=15, bold=True, color=RGBColor(0,0,150))
     add_run(p_rep, "ON\n", size=13, bold=True)
-    add_run(p_rep, '"Vitamin Deficiency Identification Using Image Processing"' + chr(10), size=16, bold=True, color=RGBColor(200,0,0))
+    add_run(p_rep, '"Vitamin Deficiency Identification Using Image Processing"' + chr(10), size=18, bold=True, color=RGBColor(200,0,0))
     
     p_sub = doc.add_paragraph()
     format_para(p_sub, WD_ALIGN_PARAGRAPH.CENTER, space_after=2, line_spacing=1.0)
-    add_run(p_sub, "Submitted in the partial fulfillment of the requirements for the award of\n", size=11, bold=True)
+    add_run(p_sub, "Submitted in the partial fulfillment of the requirements for the award of\n", size=12, bold=True)
     add_run(p_sub, "BACHELOR OF ENGINEERING IN\n", size=15, bold=True, color=RGBColor(0,0,150))
     add_run(p_sub, "COMPUTER SCIENCE AND ENGINEERING\n", size=15, bold=True, color=RGBColor(0,0,150))
     add_run(p_sub, "Project Work (BCS786)\n", size=13, bold=True, color=RGBColor(0,0,150))
@@ -341,12 +341,12 @@ def build_certificate():
     format_para(p_c, WD_ALIGN_PARAGRAPH.CENTER, space_after=10)
     u_c = p_c.add_run("CERTIFICATE")
     u_c.font.name = "Times New Roman"
-    u_c.font.size = Pt(17)
+    u_c.font.size = Pt(18)
     u_c.font.bold = True
     u_c.font.underline = True
     
     p = doc.add_paragraph()
-    format_para(p, WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=14, line_spacing=1.4)
+    format_para(p, WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=12, line_spacing=1.5)
     add_run(p, "This is to certify that the Project Work entitled ")
     add_run(p, '"Vitamin Deficiency Identification Using Image Processing"', bold=True, color=RGBColor(200,0,0))
     add_run(p, " as a part of PROJECT WORK (BCS786) carried out by ")
@@ -418,12 +418,12 @@ def build_declaration():
     format_para(p, WD_ALIGN_PARAGRAPH.CENTER, space_after=10)
     u = p.add_run("DECLARATION")
     u.font.name = "Times New Roman"
-    u.font.size = Pt(17)
+    u.font.size = Pt(18)
     u.font.bold = True
     u.font.underline = True
     
     p2 = doc.add_paragraph()
-    format_para(p2, WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=20, line_spacing=1.4)
+    format_para(p2, WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=16, line_spacing=1.5)
     add_run(p2, "We, ")
     add_run(p2, "Ashwini V (1RI23CS015), Bhumika K M (1RI23CS025), Chandana H K (1RI23CS029), HithaShree B S (1RI23CS061)", color=RGBColor(0,140,0))
     add_run(p2, ", students of 7th semester in, Computer Science and Engineering, R R Institute of Technology, Chikkabanavara, Bangalore -560090, hereby declare that the Project work entitled ")
@@ -468,7 +468,7 @@ def build_acknowledgement():
     format_para(p, WD_ALIGN_PARAGRAPH.CENTER, space_after=16)
     u = p.add_run("ACKNOWLEDGEMENT")
     u.font.name = "Times New Roman"
-    u.font.size = Pt(17)
+    u.font.size = Pt(18)
     u.font.bold = True
     u.font.underline = True
     
@@ -493,7 +493,7 @@ def build_acknowledgement():
         "CHANDANA H K (1RI23CS029)",
         "HITHASHREE B S (1RI23CS061)"
     ]
-    add_run(p_names, chr(10).join(student_lines), size=11, bold=True)
+    add_run(p_names, chr(10).join(student_lines), size=12, bold=True)
 
 def build_abstract():
     doc.add_page_break()
@@ -501,7 +501,7 @@ def build_abstract():
     format_para(p, WD_ALIGN_PARAGRAPH.CENTER, space_after=14)
     u = p.add_run("ABSTRACT")
     u.font.name = "Times New Roman"
-    u.font.size = Pt(17)
+    u.font.size = Pt(18)
     u.font.bold = True
     u.font.underline = True
     
@@ -545,7 +545,7 @@ def build_toc(toc_data):
         p = c.paragraphs[0]
         p.runs[0].font.name = "Times New Roman"
         p.runs[0].font.bold = True
-        p.runs[0].font.size = Pt(11)
+        p.runs[0].font.size = Pt(10)
     hdr[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
     hdr[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.LEFT
     hdr[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -594,7 +594,7 @@ def build_lof(figures_data):
         p = c.paragraphs[0]
         p.runs[0].font.name = "Times New Roman"
         p.runs[0].font.bold = True
-        p.runs[0].font.size = Pt(11)
+        p.runs[0].font.size = Pt(10)
     hdr[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
     hdr[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.LEFT
     hdr[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -611,7 +611,7 @@ def build_lof(figures_data):
             p.paragraph_format.space_before = Pt(2)
             r = p.add_run(val)
             r.font.name = "Times New Roman"
-            r.font.size = Pt(10.5)
+            r.font.size = Pt(10)
         row.cells[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
         row.cells[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.LEFT
         row.cells[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -642,7 +642,7 @@ def build_lot(tables_data):
         p = c.paragraphs[0]
         p.runs[0].font.name = "Times New Roman"
         p.runs[0].font.bold = True
-        p.runs[0].font.size = Pt(11)
+        p.runs[0].font.size = Pt(10)
     hdr[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
     hdr[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.LEFT
     hdr[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -659,7 +659,7 @@ def build_lot(tables_data):
             p.paragraph_format.space_before = Pt(2)
             r = p.add_run(val)
             r.font.name = "Times New Roman"
-            r.font.size = Pt(10.5)
+            r.font.size = Pt(10)
         row.cells[0].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
         row.cells[1].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.LEFT
         row.cells[2].paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
