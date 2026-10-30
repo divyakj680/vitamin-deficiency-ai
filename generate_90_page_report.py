@@ -150,7 +150,7 @@ def add_header_footer(section, header_text, is_roman=False):
     header = section.header
     for p in header.paragraphs: p.clear()
     hp = header.paragraphs[0] if header.paragraphs else header.add_paragraph()
-    hp.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    hp.paragraph_format.alignment = WD_ALIGN_PARAGRAPH.LEFT
     hr = hp.add_run(header_text)
     hr.font.name = "Times New Roman"
     hr.font.size = Pt(9.5)
@@ -253,7 +253,7 @@ def add_chapter_title(num, text):
     add_run(p1, f"CHAPTER {num}", size=18, bold=True)
     
     p2 = doc.add_paragraph()
-    format_para(p2, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=18, line_spacing=1.0)
+    format_para(p2, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=18, line_spacing=1.0)
     add_run(p2, text.upper(), size=18, bold=True)
 
 def add_paragraph(text, size=12, bold=False, align=WD_ALIGN_PARAGRAPH.JUSTIFY):
@@ -1416,8 +1416,7 @@ def build_chapter_9():
 def build_references():
     doc.add_page_break()
     p = doc.add_paragraph()
-    # CRUCIAL: REFERENCES heading LEFT ALIGNED matching senior report!
-    format_para(p, align=WD_ALIGN_PARAGRAPH.LEFT, space_after=14)
+    format_para(p, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=14)
     u = p.add_run("REFERENCES")
     u.font.name = "Times New Roman"
     u.font.size = Pt(18)
