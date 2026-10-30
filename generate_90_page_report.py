@@ -464,7 +464,7 @@ def build_declaration():
 
 def build_acknowledgement():
     p = doc.add_paragraph()
-    format_para(p, WD_ALIGN_PARAGRAPH.CENTER, space_after=14)
+    format_para(p, WD_ALIGN_PARAGRAPH.CENTER, space_after=16)
     u = p.add_run("ACKNOWLEDGEMENT")
     u.font.name = "Times New Roman"
     u.font.size = Pt(17)
@@ -472,23 +472,27 @@ def build_acknowledgement():
     u.font.underline = True
     
     ack_text = [
-        "Any achievement, be it scholastic or otherwise, does not depend solely on individual efforts but on the guidance, encouragement, and cooperation of intellectuals, elders, and friends. A number of personalities, in their own capacities, have helped us in carrying out this Project work. We would like to take this opportunity to thank them all.",
-        "First and foremost, we would like to thank Dr. Mahendra K V, Principal, RRIT, Bangalore, for his moral support and administrative leadership towards the successful completion of our project work.",
-        "We express our sincere gratitude to Dr. Manjunath R, Professor & Head of the Department of Computer Science and Engineering, RRIT, Bangalore, who has always been a great source of inspiration and scholarly guidance.",
-        "We are deeply grateful to our Project Coordinator Dr. Shivakumar Swamy N, Professor, Department of CSE, RRIT, Bangalore, for the support, continuous monitoring, and encouragement lent throughout the project work.",
-        "We are profoundly grateful to the invaluable guidance, constructive suggestions, and constant encouragement given by our guide Prof. Hemavathi, Assistant Professor, Department of Computer Science and Engineering, RRIT, Bangalore, who has helped us at every stage of the project, optimizing our technical methodology, reviewing our code, and making this project a resounding success.",
-        "We also extend our sincere thanks to the teaching and non-teaching faculty members of the Department of Computer Science and Engineering, RRIT, Bangalore, who have constantly supported us throughout our undergraduate journey.",
-        "Last, but not least, we would like to express our deep sense of gratitude and love to our parents, family members, and friends for their moral support, understanding, and constant encouragement throughout this endeavor."
+        "Any achievement, be it scholastic or otherwise, does not depend solely on individual efforts but on the guidance, encouragement, and cooperation of intellectuals, elders, and friends. A number of personalities, in their own capacities, have helped us in carrying out this project work. We take this opportunity to express our heartfelt gratitude to all of them.",
+        "First and foremost, we would like to thank Dr. Mahendra K V, Principal, R R Institute of Technology, Bengaluru, for providing us with the requisite facilities, administrative leadership, and moral support towards the successful completion of our project work.",
+        "We express our profound gratitude to Dr. Manjunath R, Professor & Head of the Department of Computer Science and Engineering, and to our Project Coordinator Dr. Shivakumar Swamy N, Professor, Department of CSE, for their constant encouragement, scholastic inspiration, and continuous monitoring throughout this endeavor.",
+        "We are deeply indebted to our guide Prof. Hemavathi, Assistant Professor, Department of Computer Science and Engineering, for her invaluable guidance, constructive criticism, and expert technical insights at every stage, which steered this project to successful fruition.",
+        "Finally, we extend our sincere thanks to all faculty and staff of the Department of CSE, and to our parents and friends for their enduring love, patience, and encouragement throughout our engineering journey."
     ]
     for para in ack_text:
         p = doc.add_paragraph()
-        format_para(p, align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=3.5, line_spacing=1.15)
-        add_run(p, para, size=10.5)
+        format_para(p, align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=8, line_spacing=1.5)
+        add_run(p, para, size=12)
         
     p_names = doc.add_paragraph()
-    format_para(p_names, WD_ALIGN_PARAGRAPH.RIGHT, space_after=2, line_spacing=1.1)
-    p_names.paragraph_format.space_before = Pt(6)
-    add_run(p_names, "Ashwini V (1RI23CS015)\nBhumika K M (1RI23CS025)\nChandana H K (1RI23CS029)\nHithaShree B S (1RI23CS061)", size=10.5, bold=True)
+    format_para(p_names, WD_ALIGN_PARAGRAPH.RIGHT, space_after=2, line_spacing=1.2)
+    p_names.paragraph_format.space_before = Pt(14)
+    student_lines = [
+        "ASHWINI V (1RI23CS015)",
+        "BHUMIKA K M (1RI23CS025)",
+        "CHANDANA H K (1RI23CS029)",
+        "HITHASHREE B S (1RI23CS061)"
+    ]
+    add_run(p_names, chr(10).join(student_lines), size=11, bold=True)
 
 def build_abstract():
     doc.add_page_break()
