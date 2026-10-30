@@ -122,3 +122,16 @@ desktop.ini
 .venv-ai/
 ai-service/models/content/*.onnx
 ai-service/models/content/tokenizer.json
+# Report test/preview artifacts (keep only final reports)
+test_*.docx
+test_*.pdf
+*_preview.png
+report_diagrams/
+~$*.docx
+~$*.pdf
+report_builder.py
+report_references.md
+
+# Keep final generated report files
+!NutriVision_AI_Final_Project_Report.docx
+!NutriVision_AI_Final_Project_Report.pdf
